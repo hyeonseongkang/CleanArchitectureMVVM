@@ -33,6 +33,24 @@ class MainActivity : AppCompatActivity() {
                 textView.text = network1.await() + " " + network2.await()
             }
         }
+
+        var coroutineTest = CoroutineScope(Dispatchers.IO)
+        coroutineTest.launch {
+            delay(2000)
+            Log.d(TAG, "${Thread.currentThread().name} + 1")
+        }
+        coroutineTest.launch {
+            delay(1000)
+            Log.d(TAG, "${Thread.currentThread().name} + 2")
+        }
+
+        var coroutineTest2 = CoroutineScope(Dispatchers.IO).launch {
+            delay(2000)
+            Log.d(TAG, "${Thread.currentThread().name} + 3")
+            delay(1000)
+            Log.d(TAG, "${Thread.currentThread().name} + 4")
+        }
+
         Log.d(TAG, "${Thread.currentThread().name}2")
 
     }
