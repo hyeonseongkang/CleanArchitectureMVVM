@@ -1,0 +1,3 @@
+package com.aos.cleanarchitecturemvvm.domain.model
+
+data class User(val id: Int, val name: String)
