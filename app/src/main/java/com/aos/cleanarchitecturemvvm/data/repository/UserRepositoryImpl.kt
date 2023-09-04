@@ -7,4 +7,8 @@ class UserRepositoryImpl(private val localDataSource: LocalDataSource) : UserRep
     override fun getUser(id: Int): User {
         return localDataSource.getUser(id)
     }
+    override fun updateUserEmail(id: Int, email: String): User {
+        return localDataSource.updateUserEmail(id, email)
+    }
+
 }
