@@ -1,4 +1,4 @@
-package com.aos.cleanarchitecturemvvm.data.datasource
+package com.aos.cleanarchitecturemvvm.data.datasource.local
 
 import com.aos.cleanarchitecturemvvm.domain.model.User
 
