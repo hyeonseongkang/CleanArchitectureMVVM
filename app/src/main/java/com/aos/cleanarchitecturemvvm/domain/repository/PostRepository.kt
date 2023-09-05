@@ -1,4 +1,4 @@
-package com.aos.cleanarchitecturemvvm.data.repository
+package com.aos.cleanarchitecturemvvm.domain.repository
 
 import com.aos.cleanarchitecturemvvm.domain.model.Post
 
