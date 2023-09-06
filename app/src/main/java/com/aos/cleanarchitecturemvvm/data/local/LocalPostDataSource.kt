@@ -14,4 +14,8 @@ class LocalPostDataSource: PostDataSource {
             throw e
         }
     }
+
+    override suspend fun getPosts(): List<Post> {
+        return posts
+    }
 }
