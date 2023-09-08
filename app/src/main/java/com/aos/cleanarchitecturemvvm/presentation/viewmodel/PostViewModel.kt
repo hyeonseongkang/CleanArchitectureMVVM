@@ -8,7 +8,7 @@ import com.aos.cleanarchitecturemvvm.domain.model.Post
 import com.aos.cleanarchitecturemvvm.domain.usecase.GetPostsUseCase
 import kotlinx.coroutines.launch
 
-class PostsViewModel(private val getPostsUseCase: GetPostsUseCase) : ViewModel() {
+class PostViewModel(private val getPostsUseCase: GetPostsUseCase) : ViewModel() {
 
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>> get() = _posts
