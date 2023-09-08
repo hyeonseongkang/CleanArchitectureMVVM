@@ -9,7 +9,7 @@ import com.aos.cleanarchitecturemvvm.domain.usecase.AddCommentUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.GetCommentsUseCase
 import kotlinx.coroutines.launch
 
-class CommentsViewModel(
+class CommentViewModel(
     private val addCommentUseCase: AddCommentUseCase,
     private val getCommentsUseCase: GetCommentsUseCase
 ) : ViewModel() {
