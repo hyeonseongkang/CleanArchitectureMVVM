@@ -3,10 +3,10 @@ package com.aos.cleanarchitecturemvvm.data.local
 import android.content.Context
 import com.aos.cleanarchitecturemvvm.data.`interface`.PostDataSource
 import com.aos.cleanarchitecturemvvm.data.local.db.AppDatabase
+import com.aos.cleanarchitecturemvvm.data.local.db.PostDao
 import com.aos.cleanarchitecturemvvm.domain.model.Post
 
-class LocalPostDataSource(context: Context) : PostDataSource {
-    private val postDao = AppDatabase.getDatabase(context).postDao()
+class LocalPostDataSource(private val postDao: PostDao) : PostDataSource {
 
     override suspend fun writePost(post: Post): Post {
         postDao.insertPost(post)
@@ -15,5 +15,10 @@ class LocalPostDataSource(context: Context) : PostDataSource {
 
     override suspend fun getPosts(): List<Post> {
         return postDao.getAllPosts()
+    }
+
+    // deletePost 메서드 추가 (원래 문제에서 제안된 부분)
+    override suspend fun deletePost(post: Post): Int {
+        return postDao.deletePost(post)
     }
 }

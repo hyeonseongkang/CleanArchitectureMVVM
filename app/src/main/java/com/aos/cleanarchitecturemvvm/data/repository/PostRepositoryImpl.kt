@@ -8,4 +8,13 @@ class PostRepositoryImpl(private val postDataSource: LocalPostDataSource): PostR
     override suspend fun writePost(post: Post): Post {
         return postDataSource.writePost(post)
     }
+
+    override suspend fun getPosts(): List<Post> {
+        return postDataSource.getPosts()
+    }
+
+    override suspend fun deletePost(post: Post): Int {
+        return postDataSource.deletePost(post)
+    }
+
 }
