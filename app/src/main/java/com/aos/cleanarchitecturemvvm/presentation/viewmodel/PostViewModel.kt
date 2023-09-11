@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.aos.cleanarchitecturemvvm.domain.model.Post
 import com.aos.cleanarchitecturemvvm.domain.usecase.DeletePostUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.GetPostsUseCase
+import com.aos.cleanarchitecturemvvm.domain.usecase.SearchPostUseCase
 import kotlinx.coroutines.launch
 
 class PostViewModel(
     private val getPostsUseCase: GetPostsUseCase,
-    private val deletePostUseCase: DeletePostUseCase
+    private val deletePostUseCase: DeletePostUseCase,
+    private val searchPostUseCase: SearchPostUseCase
 ) : ViewModel() {
 
     private val _posts = MutableLiveData<List<Post>>()
@@ -30,4 +32,9 @@ class PostViewModel(
         }
     }
 
+    fun searchPosts(query: String) {
+        viewModelScope.launch {
+            _posts.value = searchPostUseCase.execute(query)
+        }
+    }
 }
