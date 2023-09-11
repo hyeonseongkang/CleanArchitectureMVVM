@@ -17,4 +17,7 @@ interface PostDao {
 
     @Delete
     suspend fun deletePost(post: Post): Int
+
+    @Query("SELECT * FROM post WHERE title LIKE :query OR content LIKE :query")
+    suspend fun searchPosts(query: String): List<Post>
 }
