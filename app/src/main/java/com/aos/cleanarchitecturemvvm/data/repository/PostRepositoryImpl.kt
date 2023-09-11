@@ -17,4 +17,7 @@ class PostRepositoryImpl(private val postDataSource: LocalPostDataSource): PostR
         return postDataSource.deletePost(post)
     }
 
+    override suspend fun searchPost(query: String): List<Post> {
+        return postDataSource.searchPost("%$query%")
+    }
 }

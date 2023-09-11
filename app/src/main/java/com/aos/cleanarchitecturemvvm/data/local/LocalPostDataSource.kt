@@ -21,4 +21,8 @@ class LocalPostDataSource(private val postDao: PostDao) : PostDataSource {
     override suspend fun deletePost(post: Post): Int {
         return postDao.deletePost(post)
     }
+
+    override suspend fun searchPost(query: String): List<Post> {
+        return postDao.searchPosts(query)
+    }
 }
