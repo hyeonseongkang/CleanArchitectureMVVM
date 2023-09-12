@@ -8,16 +8,21 @@ import com.aos.cleanarchitecturemvvm.domain.model.Post
 import com.aos.cleanarchitecturemvvm.domain.usecase.DeletePostUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.GetPostsUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.SearchPostUseCase
+import com.aos.cleanarchitecturemvvm.domain.usecase.WritePostUseCase
 import kotlinx.coroutines.launch
 
 class PostViewModel(
     private val getPostsUseCase: GetPostsUseCase,
     private val deletePostUseCase: DeletePostUseCase,
-    private val searchPostUseCase: SearchPostUseCase
+    private val searchPostUseCase: SearchPostUseCase,
+    private val writePostUseCase: WritePostUseCase
 ) : ViewModel() {
 
     private val _posts = MutableLiveData<List<Post>>()
-    val posts: LiveData<List<Post>> get() = _posts
+    val posts: LiveData<List<Post>> = _posts
+
+    private val _currentPost = MutableLiveData<Post>()
+    val currentPost: LiveData<Post> = _currentPost
 
     fun fetchPosts() {
         viewModelScope.launch {
@@ -35,6 +40,13 @@ class PostViewModel(
     fun searchPosts(query: String) {
         viewModelScope.launch {
             _posts.value = searchPostUseCase.execute(query)
+        }
+    }
+
+    fun writePost(title: String, content: String) {
+        val post = Post(id = 0, title = title, content = content)
+        viewModelScope.launch {
+            _currentPost.value = writePostUseCase.execute(post)
         }
     }
 }
