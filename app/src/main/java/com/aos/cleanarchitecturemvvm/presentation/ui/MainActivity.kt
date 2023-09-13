@@ -5,7 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.aos.cleanarchitecturemvvm.R
+import com.aos.cleanarchitecturemvvm.data.local.LocalPostDataSource
+import com.aos.cleanarchitecturemvvm.data.local.db.AppDatabase
+import com.aos.cleanarchitecturemvvm.data.repository.PostRepositoryImpl
+import com.aos.cleanarchitecturemvvm.databinding.ActivityMainBinding
+import com.aos.cleanarchitecturemvvm.domain.usecase.DeletePostUseCase
+import com.aos.cleanarchitecturemvvm.domain.usecase.GetPostsUseCase
+import com.aos.cleanarchitecturemvvm.domain.usecase.SearchPostUseCase
+import com.aos.cleanarchitecturemvvm.domain.usecase.WritePostUseCase
+import com.aos.cleanarchitecturemvvm.presentation.factory.PostViewModelFactory
+import com.aos.cleanarchitecturemvvm.presentation.viewmodel.PostViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -15,53 +26,29 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
-    var TAG = "로그"
+    private lateinit var binding: ActivityMainBinding
+    private val viewModel: PostViewModel by lazy {
+        // Database 및 Dao 초기화
+        val postDao = AppDatabase.getDatabase(applicationContext).postDao()
+        val postDataSource = LocalPostDataSource(postDao)
+
+        // Repository 생성
+        val postRepository = PostRepositoryImpl(postDataSource)
+
+        // UseCase 생성
+        val getPostsUseCase = GetPostsUseCase(postRepository)
+        val deletePostUseCase = DeletePostUseCase(postRepository)
+        val searchPostUseCase = SearchPostUseCase(postRepository)
+        val writePostUseCase = WritePostUseCase(postRepository)
+
+        // ViewModelFactory 생성, ViewModel 받기
+        val factory = PostViewModelFactory(getPostsUseCase, deletePostUseCase, searchPostUseCase, writePostUseCase)
+        ViewModelProvider(this, factory).get(PostViewModel::class.java)
+    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        Log.d(TAG, "${Thread.currentThread().name}1")
-
-        var textView = findViewById<TextView>(R.id.textView)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d(TAG, "work.")
-            val network1 = async { network(1) }
-            val network2 = async {network(2) }
-            withContext(Dispatchers.Main) {
-                textView.text = network1.await() + " " + network2.await()
-            }
-        }
-
-        var coroutineTest = CoroutineScope(Dispatchers.IO)
-        coroutineTest.launch {
-            delay(2000)
-            Log.d(TAG, "${Thread.currentThread().name} + 1")
-        }
-        coroutineTest.launch {
-            delay(1000)
-            Log.d(TAG, "${Thread.currentThread().name} + 2")
-        }
-
-        var coroutineTest2 = CoroutineScope(Dispatchers.IO).launch {
-            delay(2000)
-            Log.d(TAG, "${Thread.currentThread().name} + 3")
-            delay(1000)
-            Log.d(TAG, "${Thread.currentThread().name} + 4")
-        }
-
-        Log.d(TAG, "${Thread.currentThread().name}2")
-
-    }
-
-    fun hello() {
-        Log.d(TAG, "${Thread.currentThread().name} + hello!!")
-    }
-
-    suspend fun network(id: Int): String {
-        delay(2000)
-        return "network ${id}"
     }
 }
-
