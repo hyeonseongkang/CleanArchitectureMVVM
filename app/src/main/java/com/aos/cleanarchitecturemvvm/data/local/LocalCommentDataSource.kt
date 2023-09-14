@@ -1,6 +1,6 @@
 package com.aos.cleanarchitecturemvvm.data.local
 
-import com.aos.cleanarchitecturemvvm.data.`interface`.CommentDataSource
+import com.aos.cleanarchitecturemvvm.data.interfaces.CommentDataSource
 import com.aos.cleanarchitecturemvvm.domain.model.Comment
 
 class LocalCommentDataSource : CommentDataSource {

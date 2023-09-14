@@ -1,8 +1,6 @@
 package com.aos.cleanarchitecturemvvm.data.local
 
-import android.content.Context
-import com.aos.cleanarchitecturemvvm.data.`interface`.PostDataSource
-import com.aos.cleanarchitecturemvvm.data.local.db.AppDatabase
+import com.aos.cleanarchitecturemvvm.data.interfaces.PostDataSource
 import com.aos.cleanarchitecturemvvm.data.local.db.PostDao
 import com.aos.cleanarchitecturemvvm.domain.model.Post
 

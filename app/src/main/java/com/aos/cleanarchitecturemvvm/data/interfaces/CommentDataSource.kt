@@ -1,4 +1,4 @@
-package com.aos.cleanarchitecturemvvm.data.`interface`
+package com.aos.cleanarchitecturemvvm.data.interfaces
 
 import com.aos.cleanarchitecturemvvm.domain.model.Comment
 
