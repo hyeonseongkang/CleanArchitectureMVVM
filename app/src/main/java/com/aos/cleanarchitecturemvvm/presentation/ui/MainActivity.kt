@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aos.cleanarchitecturemvvm.R
 import com.aos.cleanarchitecturemvvm.data.local.LocalPostDataSource
 import com.aos.cleanarchitecturemvvm.data.local.db.AppDatabase
@@ -15,6 +18,7 @@ import com.aos.cleanarchitecturemvvm.domain.usecase.DeletePostUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.GetPostsUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.SearchPostUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.WritePostUseCase
+import com.aos.cleanarchitecturemvvm.presentation.adapter.PostAdapter
 import com.aos.cleanarchitecturemvvm.presentation.factory.PostViewModelFactory
 import com.aos.cleanarchitecturemvvm.presentation.viewmodel.PostViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -46,9 +50,28 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this, factory).get(PostViewModel::class.java)
     }
 
+    private val postAdapter = PostAdapter()
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        setupRecyclerView()
+        observePosts()
+    }
+
+    private fun setupRecyclerView() {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvPosts.layoutManager = layoutManager
+        binding.rvPosts.adapter = postAdapter
+    }
+
+    private fun observePosts() {
+        viewModel.posts.observe(this, Observer { posts ->
+            postAdapter.setPosts(posts)
+        })
     }
 }
