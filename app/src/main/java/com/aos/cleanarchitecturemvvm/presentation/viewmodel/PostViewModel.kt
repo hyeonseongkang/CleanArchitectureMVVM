@@ -46,7 +46,13 @@ class PostViewModel(
     fun writePost(title: String, content: String) {
         val post = Post(id = 0, title = title, content = content)
         viewModelScope.launch {
-            _currentPost.value = writePostUseCase.execute(post)
+            val newPost = writePostUseCase.execute(post)
+            _currentPost.value = newPost
+
+            val updatedPosts = _posts.value?.toMutableList()
+            updatedPosts?.add(newPost)
+            _posts.value = updatedPosts
         }
     }
+
 }

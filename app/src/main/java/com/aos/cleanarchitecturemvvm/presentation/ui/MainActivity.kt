@@ -61,6 +61,8 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
         observePosts()
+
+        viewModel.fetchPosts()
     }
 
     private fun setupRecyclerView() {
