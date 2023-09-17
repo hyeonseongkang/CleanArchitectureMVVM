@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.aos.cleanarchitecturemvvm.domain.model.Post
 
 @Dao
@@ -20,4 +21,7 @@ interface PostDao {
 
     @Query("SELECT * FROM post WHERE title LIKE :query OR content LIKE :query")
     suspend fun searchPosts(query: String): List<Post>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updatePost(post: Post): Post
 }

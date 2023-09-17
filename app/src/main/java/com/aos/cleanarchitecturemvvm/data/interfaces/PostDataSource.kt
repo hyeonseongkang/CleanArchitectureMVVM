@@ -7,4 +7,6 @@ interface PostDataSource {
     suspend fun getPosts(): List<Post>
     suspend fun deletePost(post: Post): Int
     suspend fun searchPost(query: String): List<Post>
+
+    suspend fun updatePost(post: Post): Post
 }
