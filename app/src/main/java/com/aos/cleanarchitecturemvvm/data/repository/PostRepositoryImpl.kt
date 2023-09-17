@@ -20,4 +20,8 @@ class PostRepositoryImpl(private val postDataSource: LocalPostDataSource): PostR
     override suspend fun searchPost(query: String): List<Post> {
         return postDataSource.searchPost("%$query%")
     }
+
+    override suspend fun updatePost(post: Post): Post {
+        return postDataSource.updatePost(post)
+    }
 }

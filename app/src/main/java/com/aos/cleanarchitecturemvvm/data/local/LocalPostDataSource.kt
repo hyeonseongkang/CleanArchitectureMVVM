@@ -23,4 +23,8 @@ class LocalPostDataSource(private val postDao: PostDao) : PostDataSource {
     override suspend fun searchPost(query: String): List<Post> {
         return postDao.searchPosts(query)
     }
+
+    override suspend fun updatePost(post: Post): Post {
+        return postDao.updatePost(post)
+    }
 }
