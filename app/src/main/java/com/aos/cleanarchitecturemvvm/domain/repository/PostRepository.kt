@@ -10,4 +10,6 @@ interface PostRepository {
     suspend fun deletePost(post: Post): Int
 
     suspend fun searchPost(query: String): List<Post>
+
+    suspend fun updatePost(post: Post): Post
 }
