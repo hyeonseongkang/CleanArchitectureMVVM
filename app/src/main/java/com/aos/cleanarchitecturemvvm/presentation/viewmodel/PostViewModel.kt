@@ -8,6 +8,7 @@ import com.aos.cleanarchitecturemvvm.domain.model.Post
 import com.aos.cleanarchitecturemvvm.domain.usecase.DeletePostUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.GetPostsUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.SearchPostUseCase
+import com.aos.cleanarchitecturemvvm.domain.usecase.UpdatePostUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.WritePostUseCase
 import kotlinx.coroutines.launch
 
@@ -15,7 +16,8 @@ class PostViewModel(
     private val getPostsUseCase: GetPostsUseCase,
     private val deletePostUseCase: DeletePostUseCase,
     private val searchPostUseCase: SearchPostUseCase,
-    private val writePostUseCase: WritePostUseCase
+    private val writePostUseCase: WritePostUseCase,
+    private val updatePostUseCase: UpdatePostUseCase
 ) : ViewModel() {
 
     private val _posts = MutableLiveData<List<Post>>()
@@ -55,4 +57,11 @@ class PostViewModel(
         }
     }
 
+    fun toggleFavorite(post: Post) {
+        viewModelScope.launch {
+            val updatedPost = post.copy(isFavorite = !post.isFavorite)
+            updatePostUseCase.execute(updatedPost)
+            fetchPosts()
+        }
+    }
 }
