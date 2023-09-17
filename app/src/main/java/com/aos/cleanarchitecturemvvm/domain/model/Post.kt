@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class Post(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "content") val content: String
+    @ColumnInfo(name = "content") val content: String,
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean = false
 )
