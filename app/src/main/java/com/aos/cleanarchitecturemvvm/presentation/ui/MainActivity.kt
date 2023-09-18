@@ -22,6 +22,7 @@ import com.aos.cleanarchitecturemvvm.domain.usecase.WritePostUseCase
 import com.aos.cleanarchitecturemvvm.presentation.adapter.PostAdapter
 import com.aos.cleanarchitecturemvvm.presentation.factory.PostViewModelFactory
 import com.aos.cleanarchitecturemvvm.presentation.viewmodel.PostViewModel
+import com.aos.cleanarchitecturemvvm.util.getAppViewModelProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -32,7 +33,7 @@ import kotlinx.coroutines.withContext
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: PostViewModel by lazy {
+    private val viewModel by lazy {
         // Database 및 Dao 초기화
         val postDao = AppDatabase.getDatabase(applicationContext).postDao()
         val postDataSource = LocalPostDataSource(postDao)
@@ -48,8 +49,8 @@ class MainActivity : AppCompatActivity() {
         val updatePostUseCase = UpdatePostUseCase(postRepository)
 
         // ViewModelFactory 생성, ViewModel 받기
-        val factory = PostViewModelFactory(getPostsUseCase, deletePostUseCase, searchPostUseCase, writePostUseCase, updatePostUseCase)
-        ViewModelProvider(this, factory).get(PostViewModel::class.java)
+        getAppViewModelProvider(this, PostViewModelFactory(getPostsUseCase, deletePostUseCase, searchPostUseCase, writePostUseCase, updatePostUseCase))
+            .get(PostViewModel::class.java)
     }
 
     private val postAdapter = PostAdapter()
