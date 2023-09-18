@@ -17,6 +17,7 @@ import com.aos.cleanarchitecturemvvm.databinding.ActivityMainBinding
 import com.aos.cleanarchitecturemvvm.domain.usecase.DeletePostUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.GetPostsUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.SearchPostUseCase
+import com.aos.cleanarchitecturemvvm.domain.usecase.UpdatePostUseCase
 import com.aos.cleanarchitecturemvvm.domain.usecase.WritePostUseCase
 import com.aos.cleanarchitecturemvvm.presentation.adapter.PostAdapter
 import com.aos.cleanarchitecturemvvm.presentation.factory.PostViewModelFactory
@@ -44,9 +45,10 @@ class MainActivity : AppCompatActivity() {
         val deletePostUseCase = DeletePostUseCase(postRepository)
         val searchPostUseCase = SearchPostUseCase(postRepository)
         val writePostUseCase = WritePostUseCase(postRepository)
+        val updatePostUseCase = UpdatePostUseCase(postRepository)
 
         // ViewModelFactory 생성, ViewModel 받기
-        val factory = PostViewModelFactory(getPostsUseCase, deletePostUseCase, searchPostUseCase, writePostUseCase)
+        val factory = PostViewModelFactory(getPostsUseCase, deletePostUseCase, searchPostUseCase, writePostUseCase, updatePostUseCase)
         ViewModelProvider(this, factory).get(PostViewModel::class.java)
     }
 
