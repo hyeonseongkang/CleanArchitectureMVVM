@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aos.cleanarchitecturemvvm.databinding.ItemPostBinding
 import com.aos.cleanarchitecturemvvm.domain.model.Post
+import com.aos.cleanarchitecturemvvm.presentation.viewmodel.PostViewModel
 
-class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostAdapter(private val viewModel: PostViewModel) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     private var posts: List<Post> = listOf()
 
@@ -27,10 +28,15 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     override fun getItemCount() = posts.size
 
-    class PostViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PostViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
             binding.post = post
+
+            binding.root.setOnClickListener {
+                viewModel.deletePost(post)
+            }
+
             binding.executePendingBindings()
         }
     }

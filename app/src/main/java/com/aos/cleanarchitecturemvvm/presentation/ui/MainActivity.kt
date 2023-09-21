@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             .get(PostViewModel::class.java)
     }
 
-    private val postAdapter = PostAdapter()
+    private val postAdapter by lazy { PostAdapter(viewModel) }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
