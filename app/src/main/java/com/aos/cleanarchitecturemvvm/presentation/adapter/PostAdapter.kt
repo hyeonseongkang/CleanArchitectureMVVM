@@ -7,7 +7,7 @@ import com.aos.cleanarchitecturemvvm.databinding.ItemPostBinding
 import com.aos.cleanarchitecturemvvm.domain.model.Post
 import com.aos.cleanarchitecturemvvm.presentation.viewmodel.PostViewModel
 
-class PostAdapter(private val viewModel: PostViewModel) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     private var posts: List<Post> = listOf()
 
@@ -28,15 +28,14 @@ class PostAdapter(private val viewModel: PostViewModel) : RecyclerView.Adapter<P
 
     override fun getItemCount() = posts.size
 
+    fun getPostAtPosition(position: Int): Post {
+        return posts[position]
+    }
+
     inner class PostViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
             binding.post = post
-
-            binding.root.setOnClickListener {
-                viewModel.deletePost(post)
-            }
-
             binding.executePendingBindings()
         }
     }

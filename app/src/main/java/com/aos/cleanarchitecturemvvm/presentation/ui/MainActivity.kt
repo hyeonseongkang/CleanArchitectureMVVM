@@ -23,6 +23,7 @@ import com.aos.cleanarchitecturemvvm.presentation.adapter.PostAdapter
 import com.aos.cleanarchitecturemvvm.presentation.factory.PostViewModelFactory
 import com.aos.cleanarchitecturemvvm.presentation.viewmodel.PostViewModel
 import com.aos.cleanarchitecturemvvm.util.getAppViewModelProvider
+import com.aos.cleanarchitecturemvvm.util.setupSwipeToDelete
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             .get(PostViewModel::class.java)
     }
 
-    private val postAdapter by lazy { PostAdapter(viewModel) }
+    private val postAdapter by lazy { PostAdapter() }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvPosts.layoutManager = layoutManager
         binding.rvPosts.adapter = postAdapter
+        binding.rvPosts.setupSwipeToDelete(viewModel, postAdapter)
     }
 
     private fun observePosts() {
