@@ -3,11 +3,8 @@ package com.aos.cleanarchitecturemvvm.presentation.ui
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aos.cleanarchitecturemvvm.R
 import com.aos.cleanarchitecturemvvm.data.local.LocalPostDataSource
@@ -23,13 +20,7 @@ import com.aos.cleanarchitecturemvvm.presentation.adapter.PostAdapter
 import com.aos.cleanarchitecturemvvm.presentation.factory.PostViewModelFactory
 import com.aos.cleanarchitecturemvvm.presentation.viewmodel.PostViewModel
 import com.aos.cleanarchitecturemvvm.util.getAppViewModelProvider
-import com.aos.cleanarchitecturemvvm.util.setupSwipeToDelete
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.aos.cleanarchitecturemvvm.util.setupSwipeToDeleteAndEdit
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvPosts.layoutManager = layoutManager
         binding.rvPosts.adapter = postAdapter
-        binding.rvPosts.setupSwipeToDelete(viewModel, postAdapter)
+        binding.rvPosts.setupSwipeToDeleteAndEdit(viewModel, postAdapter, this)
     }
 
     private fun observePosts() {
