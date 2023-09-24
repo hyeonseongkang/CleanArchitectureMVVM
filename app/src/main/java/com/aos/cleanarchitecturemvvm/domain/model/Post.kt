@@ -9,5 +9,6 @@ data class Post(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "content") val content: String,
-    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean = false
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean = false,
+    @ColumnInfo(name = "image_path") val imagePath: String? = null
 )
