@@ -45,8 +45,8 @@ class PostViewModel(
         }
     }
 
-    fun writePost(title: String, content: String) {
-        val post = Post(id = 0, title = title, content = content)
+    fun writePost(title: String, content: String, imagePath: String?) {
+        val post = Post(id = 0, title = title, content = content, imagePath = imagePath)
         viewModelScope.launch {
             val newPost = writePostUseCase.execute(post)
             _currentPost.value = newPost
