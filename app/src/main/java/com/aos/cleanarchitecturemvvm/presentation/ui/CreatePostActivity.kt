@@ -65,16 +65,28 @@ class CreatePostActivity : AppCompatActivity() {
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(intent, IMAGE_PICK_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_PICK_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedImageUri = data.data
-            binding.ivPostPhoto.setImageURI(selectedImageUri)
+            val selectedImageUris = mutableListOf<Uri>()
+            val clipData = data.clipData
+            if (clipData != null) {
+                for (i in 0 until clipData.itemCount) {
+                    val uri = clipData.getItemAt(i).uri
+                   // selectedImageUris.add(uri)
+                }
+            } else {
+                data.data?.let { uri ->
+                   // selectedImageUris.add(uri)
+                }
+            }
         }
     }
+
 
     private fun getPathFromURI(contentURI: Uri?): String? {
         val result: String?
