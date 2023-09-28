@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import com.aos.cleanarchitecturemvvm.R
 import com.aos.cleanarchitecturemvvm.data.local.LocalPostDataSource
@@ -47,6 +48,10 @@ class CreatePostActivity : AppCompatActivity() {
             .get(PostViewModel::class.java)
     }
 
+    private val pickImagesLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+        handleSelectedUris(uris)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_post)
@@ -63,30 +68,18 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        startActivityForResult(intent, IMAGE_PICK_REQUEST_CODE)
+        pickImagesLauncher.launch("image/*")
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedImageUris = mutableListOf<Uri>()
-            val clipData = data.clipData
-            if (clipData != null) {
-                for (i in 0 until clipData.itemCount) {
-                    val uri = clipData.getItemAt(i).uri
-                   // selectedImageUris.add(uri)
-                }
-            } else {
-                data.data?.let { uri ->
-                   // selectedImageUris.add(uri)
-                }
-            }
+    // 3. 결과 수신 및 처리 코드
+    private fun handleSelectedUris(uris: List<Uri>) {
+        val selectedImageUris = mutableListOf<Uri>()
+
+        // 주어진 URI 리스트에서 모든 URI를 추가
+        for (uri in uris) {
+            selectedImageUris.add(uri)
         }
     }
-
 
     private fun getPathFromURI(contentURI: Uri?): String? {
         val result: String?
