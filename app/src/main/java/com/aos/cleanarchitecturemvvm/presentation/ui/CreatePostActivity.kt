@@ -28,6 +28,12 @@ class CreatePostActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreatePostBinding
 
+    private var selectedImageUris: MutableList<String> = mutableListOf()
+
+    private val pickImagesLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+        handleSelectedUris(uris)
+    }
+
     private val viewModel by lazy {
         // Database 및 Dao 초기화
         val postDao = AppDatabase.getDatabase(applicationContext).postDao()
@@ -48,17 +54,23 @@ class CreatePostActivity : AppCompatActivity() {
             .get(PostViewModel::class.java)
     }
 
-    private val pickImagesLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
-        handleSelectedUris(uris)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_post)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        setupClickListener()
         setupImageViewClickListener()
+
+    }
+
+    private fun setupClickListener() {
+        binding.btnPost.setOnClickListener {
+            viewModel.writePost(binding.etPostTitle.text.toString(),
+            binding.etPostContent.text.toString(),
+            selectedImageUris)
+        }
     }
 
     private fun setupImageViewClickListener() {
@@ -71,14 +83,8 @@ class CreatePostActivity : AppCompatActivity() {
         pickImagesLauncher.launch("image/*")
     }
 
-    // 3. 결과 수신 및 처리 코드
     private fun handleSelectedUris(uris: List<Uri>) {
-        val selectedImageUris = mutableListOf<Uri>()
-
-        // 주어진 URI 리스트에서 모든 URI를 추가
-        for (uri in uris) {
-            selectedImageUris.add(uri)
-        }
+        selectedImageUris.addAll(uris.map { it.toString() })
     }
 
     private fun getPathFromURI(contentURI: Uri?): String? {
